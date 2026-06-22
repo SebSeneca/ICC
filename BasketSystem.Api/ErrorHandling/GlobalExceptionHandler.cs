@@ -29,6 +29,8 @@ public sealed class GlobalExceptionHandler(IProblemDetailsService problemDetails
     {
         ValidationException => (StatusCodes.Status400BadRequest, "Validation failed", exception.Message),
         NotFoundException => (StatusCodes.Status404NotFound, "Resource not found", exception.Message),
+        BusinessRuleException => (
+            StatusCodes.Status422UnprocessableEntity, "Request cannot be processed", exception.Message),
         HttpRequestException or TimeoutException => (
             StatusCodes.Status502BadGateway,
             "Upstream service unavailable",

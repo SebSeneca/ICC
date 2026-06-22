@@ -25,4 +25,20 @@ public sealed class BasketItem
     public int Quantity { get; private set; }
 
     public decimal LineTotal => UnitPrice * Quantity;
+
+    public void IncreaseQuantity(int by)
+    {
+        if (by < 1)
+            throw new ArgumentOutOfRangeException(nameof(by), "Increase must be at least 1.");
+
+        Quantity += by;
+    }
+
+    public void SetQuantity(int quantity)
+    {
+        if (quantity < 1)
+            throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be at least 1.");
+
+        Quantity = quantity;
+    }
 }

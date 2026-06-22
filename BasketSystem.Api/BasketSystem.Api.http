@@ -23,4 +23,24 @@ POST {{BasketSystem_HostAddress}}/api/baskets
 GET {{BasketSystem_HostAddress}}/api/baskets/00000000-0000-0000-0000-000000000000
 Accept: application/json
 
+### Add a (buyable, top-100) product to the basket
+POST {{BasketSystem_HostAddress}}/api/baskets/00000000-0000-0000-0000-000000000000/items
+Content-Type: application/json
+
+{
+  "productId": 14,
+  "quantity": 2
+}
+
+### Set the quantity of a basket line (use DELETE to remove instead of 0)
+PUT {{BasketSystem_HostAddress}}/api/baskets/00000000-0000-0000-0000-000000000000/items/14
+Content-Type: application/json
+
+{
+  "quantity": 5
+}
+
+### Remove a product from the basket
+DELETE {{BasketSystem_HostAddress}}/api/baskets/00000000-0000-0000-0000-000000000000/items/14
+
 ###
