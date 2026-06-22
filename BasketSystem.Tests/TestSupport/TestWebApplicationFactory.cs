@@ -1,4 +1,5 @@
 using BasketSystem.Application.Catalog;
+using BasketSystem.Application.CodeChallenge;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -15,6 +16,9 @@ public sealed class TestWebApplicationFactory : WebApplicationFactory<Program>
         {
             services.RemoveAll<IProductCatalog>();
             services.AddSingleton<IProductCatalog>(new TestProductCatalog(ProductCatalogFixture.Default));
+
+            services.RemoveAll<ICodeChallengeApiClient>();
+            services.AddSingleton<ICodeChallengeApiClient, FakeCodeChallengeApiClient>();
         });
     }
 }

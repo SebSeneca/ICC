@@ -1,11 +1,12 @@
 using BasketSystem.Application.Baskets;
+using BasketSystem.Application.Orders;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasketSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/baskets")]
-public sealed class BasketsController(IBasketService baskets) : ControllerBase
+public sealed class BasketsController(IBasketService baskets, IOrderService orders) : ControllerBase
 {
     [HttpPost]
     public ActionResult<BasketDto> Create()
@@ -30,4 +31,8 @@ public sealed class BasketsController(IBasketService baskets) : ControllerBase
     [HttpDelete("{id:guid}/items/{productId:int}")]
     public ActionResult<BasketDto> RemoveItem(Guid id, int productId)
         => Ok(baskets.RemoveItem(id, productId));
+
+    [HttpPost("{id:guid}/submit")]
+    public async Task<ActionResult<OrderDto>> Submit(Guid id, CancellationToken cancellationToken)
+        => Ok(await orders.SubmitAsync(id, cancellationToken));
 }

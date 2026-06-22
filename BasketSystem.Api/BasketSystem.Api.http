@@ -43,4 +43,7 @@ Content-Type: application/json
 ### Remove a product from the basket
 DELETE {{BasketSystem_HostAddress}}/api/baskets/00000000-0000-0000-0000-000000000000/items/14
 
+### Submit the basket as an order (calls the upstream CreateOrder)
+POST {{BasketSystem_HostAddress}}/api/baskets/00000000-0000-0000-0000-000000000000/submit
+
 ###

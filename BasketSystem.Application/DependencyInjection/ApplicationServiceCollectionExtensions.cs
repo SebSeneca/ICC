@@ -1,4 +1,5 @@
 using BasketSystem.Application.Baskets;
+using BasketSystem.Application.Orders;
 using BasketSystem.Application.Products;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<IProductQueryService, ProductQueryService>();
         services.AddScoped<IBuyableProductCatalog, BuyableProductCatalog>();
         services.AddScoped<IBasketService, BasketService>();
+        services.AddScoped<IOrderService, OrderService>();
         return services;
     }
 }
