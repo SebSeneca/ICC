@@ -4,15 +4,15 @@
 Som udvikler vil jeg have en lagdelt solution med separat testprojekt og fælles fejlhåndtering, så vi kan bygge resten af Basket API'et testdrevet og efter SOLID.
 
 ## Kontekst
-Fundament for alt videre arbejde. Refererer til planens Trin 0 samt B2 (lagdeling) og B12 (fejlformat). Det eksisterende web-projekt `ImpactCodeChallence` bliver Api-laget; scaffold (WeatherForecast) fjernes.
+Fundament for alt videre arbejde. Refererer til planens Trin 0 samt B2 (lagdeling) og B12 (fejlformat). Det eksisterende web-projekt omdøbes til `BasketSystem.Api`; scaffold (WeatherForecast) fjernes.
 
 ## Afhængigheder
 Ingen (første story).
 
 ## Scope
-- Opret projekter: `ImpactCodeChallence.Domain`, `.Application`, `.Infrastructure`, og testprojekt `.Tests` (xUnit).
+- Opret projekter: `BasketSystem.Domain`, `.Application`, `.Infrastructure`, og testprojekt `.Tests` (xUnit).
 - Projektreferencer: Application→Domain; Infrastructure→Application,Domain; Api→Application,Infrastructure,Domain; Tests→alle.
-- Tilføj alle projekter til `ImpactCodeChallence.slnx`.
+- Tilføj alle projekter til `BasketSystem.slnx`.
 - Fjern `WeatherForecast.cs` og `Controllers/WeatherForecastController.cs`.
 - NuGet: test-pakker (`Microsoft.AspNetCore.Mvc.Testing`, `NSubstitute`, `FluentAssertions`), `Microsoft.Extensions.Http` og `Microsoft.Extensions.Caching.Memory` i Infrastructure.
 - Global ProblemDetails-fejlhåndtering (exception-handler/middleware) der mapper til 400/404/422/502.

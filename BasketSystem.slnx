@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="BasketSystem.Domain/BasketSystem.Domain.csproj" />
+  <Project Path="BasketSystem.Application/BasketSystem.Application.csproj" />
+  <Project Path="BasketSystem.Infrastructure/BasketSystem.Infrastructure.csproj" />
+  <Project Path="BasketSystem.Api/BasketSystem.Api.csproj" />
+  <Project Path="BasketSystem.Tests/BasketSystem.Tests.csproj" />
+</Solution>

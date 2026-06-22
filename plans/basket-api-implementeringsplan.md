@@ -76,7 +76,7 @@ Hvert kriterium er testbart og mapper til Test Plan.
 - **B7 — Kurv oprettes eksplicit** via `POST /api/baskets` (returnerer GUID). Add kræver eksisterende kurv. (Alternativ auto-create fravælges for klar livscyklus.)
 - **B8 — Pris og produktdata til ordren slås op i kataloget ved submit-tidspunkt** (kilden er sandhed), så klienten ikke kan diktere pris.
 - **B9 — `productSize`:** upstream-produkt har `size` som `int`, men `OrderLine.productSize` er `string`. Vi konverterer `size.ToString()` ved ordreoprettelse.
-- **B10 — Projektnavngivning:** eksisterende web-projekt hedder `ImpactCodeChallence` (bevidst bevaret stavemåde fra repo) og bliver Api-laget. Nye projekter navngives `ImpactCodeChallence.Domain/.Application/.Infrastructure/.Tests` for konsistens med solution-navnet.
+- **B10 — Projektnavngivning:** alle projekter prefixes med `BasketSystem` for at afspejle hvad systemet er. Web-projektet omdøbes til `BasketSystem.Api`; øvrige er `BasketSystem.Domain/.Application/.Infrastructure/.Tests`. Solution-filen er `BasketSystem.slnx`. (Repo-mappen forbliver `ImpactCodeChallence`.)
 - **B11 — HTTP-klient** implementeres med `HttpClient` via `IHttpClientFactory` (typed client). Genforsøg ved 401 håndteres eksplicit i token-laget; evt. transient-retry kan tilføjes senere (out of scope nu).
 - **B12 — Fejlformat:** standard `ProblemDetails`. Validering → 400, ikke-fundet → 404, forretningsregel-brud (ikke-købbart ved submit) → 422, upstream-fejl → 502.
 - **B13 — Trådsikkerhed:** in-memory kurv-store bruger `ConcurrentDictionary<Guid, Basket>`.
@@ -84,7 +84,7 @@ Hvert kriterium er testbart og mapper til Test Plan.
 ---
 
 ## Test Plan (skrives først — TDD)
-Testene skrives før produktionskoden og forventes at fejle initielt (funktionalitet findes endnu ikke), hvorefter de bliver grønne efterhånden som koden lander. Ét testprojekt `ImpactCodeChallence.Tests` (xUnit). Mocking via NSubstitute (eller Moq). E2E via `Microsoft.AspNetCore.Mvc.Testing` (`WebApplicationFactory`) hvor `ICodeChallengeApiClient` erstattes af en fake med fast testkatalog.
+Testene skrives før produktionskoden og forventes at fejle initielt (funktionalitet findes endnu ikke), hvorefter de bliver grønne efterhånden som koden lander. Ét testprojekt `BasketSystem.Tests` (xUnit). Mocking via NSubstitute (eller Moq). E2E via `Microsoft.AspNetCore.Mvc.Testing` (`WebApplicationFactory`) hvor `ICodeChallengeApiClient` erstattes af en fake med fast testkatalog.
 
 **Testdata:** den gemte upstream-respons (`doc/GetAllProducts.json.json`, 10.000 produkter — bør omdøbes til `GetAllProducts.json`) kan kopieres ind som embedded fixture i testprojektet og bruges af fake-klienten, så e2e-tests kører mod realistiske data uden netværk. Mindre, håndlavede datasæt bruges til præcise unit-tests (fx kontrolleret stars/price-fordeling).
 
@@ -114,12 +114,12 @@ Udføres i rækkefølge, TDD-først (fejlende test → implementering → grøn)
 
 ### Trin 0 — Solution-opsætning
 - Opret projekter og referencer:
-  - `ImpactCodeChallence.Domain` (classlib, ingen deps).
-  - `ImpactCodeChallence.Application` (classlib → Domain).
-  - `ImpactCodeChallence.Infrastructure` (classlib → Application, Domain).
-  - `ImpactCodeChallence` (eksisterende web → Application, Infrastructure, Domain).
-  - `ImpactCodeChallence.Tests` (xUnit → alle ovenstående).
-- Tilføj alle projekter til `ImpactCodeChallence.slnx`.
+  - `BasketSystem.Domain` (classlib, ingen deps).
+  - `BasketSystem.Application` (classlib → Domain).
+  - `BasketSystem.Infrastructure` (classlib → Application, Domain).
+  - `BasketSystem.Api` (eksisterende web, omdøbt → Application, Infrastructure, Domain).
+  - `BasketSystem.Tests` (xUnit → alle ovenstående).
+- Tilføj alle projekter til `BasketSystem.slnx`.
 - Fjern scaffold-rester: `WeatherForecast.cs`, `Controllers/WeatherForecastController.cs`.
 - NuGet: `Microsoft.Extensions.Http`, `Microsoft.Extensions.Caching.Memory` (Infrastructure); `Microsoft.AspNetCore.Mvc.Testing`, `NSubstitute`, `FluentAssertions` (Tests). OpenAPI/Swagger til Api (`Swashbuckle.AspNetCore` eller bevar `AddOpenApi`).
 - *Verificér:* `dotnet build` lykkes.
