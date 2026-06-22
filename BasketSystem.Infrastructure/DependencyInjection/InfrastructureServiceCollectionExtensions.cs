@@ -1,6 +1,8 @@
+using BasketSystem.Application.Baskets;
 using BasketSystem.Application.Catalog;
 using BasketSystem.Application.CodeChallenge;
 using BasketSystem.Application.Configuration;
+using BasketSystem.Infrastructure.Baskets;
 using BasketSystem.Infrastructure.Catalog;
 using BasketSystem.Infrastructure.CodeChallengeApi;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +13,7 @@ namespace BasketSystem.Infrastructure.DependencyInjection;
 
 public static class InfrastructureServiceCollectionExtensions
 {
-    public static IServiceCollection AddCodeChallengeApi(
+    public static IServiceCollection AddInfrastructure(
         this IServiceCollection services, IConfiguration configuration)
     {
         services.AddOptions<CodeChallengeApiOptions>()
@@ -39,6 +41,8 @@ public static class InfrastructureServiceCollectionExtensions
 
         services.AddSingleton<IProductCatalog, CachedProductCatalog>();
         services.AddHostedService<CatalogWarmupHostedService>();
+
+        services.AddSingleton<IBasketRepository, InMemoryBasketRepository>();
 
         return services;
     }

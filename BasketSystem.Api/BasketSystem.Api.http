@@ -16,4 +16,11 @@ Accept: application/json
 GET {{BasketSystem_HostAddress}}/api/products?page=1&pageSize=1001
 Accept: application/json
 
+### Create a new basket (returns 201 + GUID)
+POST {{BasketSystem_HostAddress}}/api/baskets
+
+### Get a basket by its id (replace the GUID with one from the create response)
+GET {{BasketSystem_HostAddress}}/api/baskets/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
 ###
