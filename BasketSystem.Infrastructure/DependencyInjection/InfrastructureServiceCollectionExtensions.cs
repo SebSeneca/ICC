@@ -1,4 +1,7 @@
+using BasketSystem.Application.Catalog;
+using BasketSystem.Application.CodeChallenge;
 using BasketSystem.Application.Configuration;
+using BasketSystem.Infrastructure.Catalog;
 using BasketSystem.Infrastructure.CodeChallengeApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +28,17 @@ public static class InfrastructureServiceCollectionExtensions
             var options = sp.GetRequiredService<IOptions<CodeChallengeApiOptions>>().Value;
             client.BaseAddress = NormalizeBaseAddress(options.BaseUrl);
         });
+
+        services.AddHttpClient<ICodeChallengeApiClient, CodeChallengeApiClient>((sp, client) =>
+        {
+            var options = sp.GetRequiredService<IOptions<CodeChallengeApiOptions>>().Value;
+            client.BaseAddress = NormalizeBaseAddress(options.BaseUrl);
+            client.Timeout = TimeSpan.FromMinutes(2);
+        })
+        .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+
+        services.AddSingleton<IProductCatalog, CachedProductCatalog>();
+        services.AddHostedService<CatalogWarmupHostedService>();
 
         return services;
     }
