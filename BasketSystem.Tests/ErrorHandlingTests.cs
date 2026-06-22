@@ -1,11 +1,11 @@
 using System.Net;
+using BasketSystem.Tests.TestSupport;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace BasketSystem.Tests;
 
-public class ErrorHandlingTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public class ErrorHandlingTests(TestWebApplicationFactory factory)
+    : IClassFixture<TestWebApplicationFactory>
 {
     [Fact]
     public async Task Unknown_route_returns_problem_details_with_404()

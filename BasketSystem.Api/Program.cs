@@ -1,10 +1,14 @@
+using BasketSystem.Api.ErrorHandling;
+using BasketSystem.Application.DependencyInjection;
 using BasketSystem.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddOpenApi();
+builder.Services.AddApplicationServices();
 builder.Services.AddCodeChallengeApi(builder.Configuration);
 
 var app = builder.Build();

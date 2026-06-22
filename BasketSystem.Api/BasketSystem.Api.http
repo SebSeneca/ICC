@@ -1,3 +1,19 @@
 @BasketSystem_HostAddress = http://localhost:5204
 
+### Top-ranked 100 products (stars desc)
+GET {{BasketSystem_HostAddress}}/api/products/top
+Accept: application/json
+
+### Catalog paginated by price ascending
+GET {{BasketSystem_HostAddress}}/api/products?page=1&pageSize=20
+Accept: application/json
+
+### 10 cheapest products
+GET {{BasketSystem_HostAddress}}/api/products/cheapest
+Accept: application/json
+
+### Page size above 1000 is rejected (400)
+GET {{BasketSystem_HostAddress}}/api/products?page=1&pageSize=1001
+Accept: application/json
+
 ###
