@@ -22,23 +22,13 @@ public sealed class BasketItem
 
     public int Size { get; }
 
-    public int Quantity { get; private set; }
+    public int Quantity { get; }
 
     public decimal LineTotal => UnitPrice * Quantity;
 
-    public void IncreaseQuantity(int by)
-    {
-        if (by < 1)
-            throw new ArgumentOutOfRangeException(nameof(by), "Increase must be at least 1.");
+    public BasketItem WithQuantity(int quantity) =>
+        new(ProductId, ProductName, UnitPrice, Size, quantity);
 
-        Quantity += by;
-    }
-
-    public void SetQuantity(int quantity)
-    {
-        if (quantity < 1)
-            throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be at least 1.");
-
-        Quantity = quantity;
-    }
+    public BasketItem WithAdditionalQuantity(int additional) =>
+        new(ProductId, ProductName, UnitPrice, Size, Quantity + additional);
 }
