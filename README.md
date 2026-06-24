@@ -33,14 +33,13 @@ All settings live under the `CodeChallengeApi` section of `appsettings.json`:
 "CodeChallengeApi": {
   "BaseUrl": "https://azfun-impact-code-challenge-api.azurewebsites.net",
   "Email": "seb@challenge.dk",
-  "ProductCacheTtl": "00:05:00",
   "RefreshInterval": "00:04:00"
 }
 ```
 
 - `Email` is only used to obtain an upstream token. The upstream `Login` accepts any address, so a
   template value is sufficient — there is no secret to manage.
-- `ProductCacheTtl` / `RefreshInterval` control how often the cached catalog is refreshed.
+- `RefreshInterval` controls how often the background service reloads the cached catalog.
 
 ## Endpoints
 
@@ -106,9 +105,10 @@ Application's ports.
   `ProductRanking`, so it is easy to change. Only top-100 products may be added to a basket or
   ordered.
 - **Caching.** Upstream `GetAllProducts` returns all 10,000 products in a single, slow (~30s) call.
-  The catalog is therefore cached in memory, warmed up eagerly at startup and refreshed periodically
-  in the background (stale-while-revalidate). A single-flight lock ensures concurrent cold requests
-  trigger only one upstream call; if a refresh fails, the previous catalog keeps being served.
+  The catalog is therefore cached in memory: the background service loads it at startup and reloads
+  it every `RefreshInterval`. A single-flight lock ensures concurrent cold requests trigger only one
+  upstream call; if a reload fails, the previous catalog keeps being served, so reads never fail
+  because of a transient upstream outage.
 - **Authentication.** A delegating handler attaches the upstream Bearer token to every request and,
   on a `401`, refreshes the token and retries once. The token is cached and obtained lazily; clients
   never see any of this.

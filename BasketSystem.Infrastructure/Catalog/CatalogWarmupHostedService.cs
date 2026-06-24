@@ -15,10 +15,13 @@ public sealed class CatalogWarmupHostedService(
     {
         var interval = options.Value.RefreshInterval;
 
+        await WarmUpAsync(stoppingToken);
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
+                await Task.Delay(interval, stoppingToken);
                 await catalog.RefreshAsync(stoppingToken);
                 logger.LogInformation("Product catalog refreshed.");
             }
@@ -30,15 +33,22 @@ public sealed class CatalogWarmupHostedService(
             {
                 logger.LogError(ex, "Failed to refresh product catalog; retrying in {Interval}.", interval);
             }
+        }
+    }
 
-            try
-            {
-                await Task.Delay(interval, stoppingToken);
-            }
-            catch (OperationCanceledException)
-            {
-                break;
-            }
+    private async Task WarmUpAsync(CancellationToken stoppingToken)
+    {
+        try
+        {
+            await catalog.GetProductsAsync(stoppingToken);
+            logger.LogInformation("Product catalog warmed up.");
+        }
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Initial catalog warm-up failed; it will be loaded on first request.");
         }
     }
 }

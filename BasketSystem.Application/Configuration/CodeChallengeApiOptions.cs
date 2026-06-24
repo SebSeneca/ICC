@@ -8,7 +8,5 @@ public sealed class CodeChallengeApiOptions
 
     public string Email { get; init; } = "seb@challenge.dk";
 
-    public TimeSpan ProductCacheTtl { get; init; } = TimeSpan.FromMinutes(5);
-
     public TimeSpan RefreshInterval { get; init; } = TimeSpan.FromMinutes(4);
 }
